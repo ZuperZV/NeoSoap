@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.zuperz.neotech.block.entity.ModBlockEntities;
 import org.jetbrains.annotations.Nullable;
 
-public class HardAnvilBlockEntity extends BlockEntity implements Container, RecipeInput {
+public class HardAnvilBlockEntity extends BlockEntity implements Container {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     private float rotation;
     private int maxItemCount;
