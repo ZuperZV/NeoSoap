@@ -34,12 +34,28 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.IRON_GEAR);
                         pOutput.accept(ModItems.LAPIS_GEAR);
                         pOutput.accept(ModItems.NETHERITE_GEAR);
+
+                        pOutput.accept(ModItems.STEEL_PLATE);
+                        pOutput.accept(ModItems.COPPER_PLATE);
+                        pOutput.accept(ModItems.DIAMOND_PLATE);
+                        pOutput.accept(ModItems.EMERALD_PLATE);
+                        pOutput.accept(ModItems.GOLD_PLATE);
+                        pOutput.accept(ModItems.IRON_PLATE);
+                        pOutput.accept(ModItems.LAPIS_PLATE);
+                        pOutput.accept(ModItems.NETHERITE_PLATE);
+
+                        pOutput.accept(ModItems.WOODEN_HAMMER);
+                        pOutput.accept(ModItems.STONE_HAMMER);
+                        pOutput.accept(ModItems.GOLD_HAMMER);
+                        pOutput.accept(ModItems.IRON_HAMMER);
+                        pOutput.accept(ModItems.DIAMOND_HAMMER);
+                        pOutput.accept(ModItems.NETHERITE_HAMMER);
                     }).build());
 
     public static final Supplier<CreativeModeTab> NEO_TECH_BLOCKS_TAB =
             CREATIVE_MODE_TABS.register("neo_tech_blocks_tab", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.neo_tech.neo_tech_blocks_tab"))
-                    .icon(() -> new ItemStack(ModBlocks.STEEL_ORE.get()))
+                    .icon(() -> new ItemStack(ModBlocks.HARD_ANVIL.get()))
                     .withTabsBefore(ResourceLocation.fromNamespaceAndPath(NeoTech.MOD_ID, "neo_tech_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModBlocks.STEEL_BLOCK);

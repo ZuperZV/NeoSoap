@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.25,
+  "group": "steel_ingot",
+  "ingredient": {
+    "item": "neo_tech:steel_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "neo_tech:steel_ingot"
+  }
+}

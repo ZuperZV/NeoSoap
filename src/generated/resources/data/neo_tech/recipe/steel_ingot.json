@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "neo_tech:steel_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "neo_tech:steel_ingot"
+  }
+}

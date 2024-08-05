@@ -1,0 +1,6 @@
+// 1.21	2024-08-03T17:44:35.6479394	Loot Tables
+c940f91d98164c6e84e6f817b90d638b6ed607bc data/neo_tech/loot_table/blocks/hard_anvil.json
+e7d94326a2a16eff14408e6e6d5ee053bb31e6f5 data/neo_tech/loot_table/blocks/raw_steel_block.json
+8c82ddd93993c2f074623a0fcad16d40fa7d184e data/neo_tech/loot_table/blocks/steel_block.json
+9970e9c219e92eb0feb5b37597649da85ec2fcf0 data/neo_tech/loot_table/blocks/steel_deepslate_ore.json
+e71e61a6fad97a9028a2c5650fa828f791fac584 data/neo_tech/loot_table/blocks/steel_ore.json

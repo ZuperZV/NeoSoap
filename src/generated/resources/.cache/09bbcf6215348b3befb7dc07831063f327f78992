@@ -1,0 +1,14 @@
+// 1.21	2024-08-03T18:36:08.9151326	Block States: neo_tech
+9ac56eca66d2e17440fd361373c236a42acc2155 assets/neo_tech/blockstates/hard_anvil.json
+cc372dd27bb598d317f1d53a6b8b99abecf6ceb6 assets/neo_tech/blockstates/raw_steel_block.json
+3c46182256f48a95ef12bfced4ac3acc0204efd5 assets/neo_tech/blockstates/steel_block.json
+520bb6cf83cca23689c2d57d7fe646550de0cb77 assets/neo_tech/blockstates/steel_deepslate_ore.json
+cda772e409f18ff6f8f1b17fce994758f36c4722 assets/neo_tech/blockstates/steel_ore.json
+7b20aa862b1d44bd526d0f084d408e7c28cb848d assets/neo_tech/models/block/raw_steel_block.json
+ddb3f53a900b6683fed5dda710a376d3afed0704 assets/neo_tech/models/block/steel_block.json
+5b4cf7cb69ae8cf5038767e094684eaf341056b8 assets/neo_tech/models/block/steel_deepslate_ore.json
+c9a74c022e691be57334995f3be06fb8bfde5bf7 assets/neo_tech/models/block/steel_ore.json
+088b48e8e78b5ae6d97e50dc714b2e0b182c1d1c assets/neo_tech/models/item/raw_steel_block.json
+f604314ca4827f613d9242cb4a64b02e8a2d55d6 assets/neo_tech/models/item/steel_block.json
+06c2793386474dda73bd5a9d50dc65535212182e assets/neo_tech/models/item/steel_deepslate_ore.json
+2dfe37617c60b8afe0432568a9f89dbbcef5c395 assets/neo_tech/models/item/steel_ore.json

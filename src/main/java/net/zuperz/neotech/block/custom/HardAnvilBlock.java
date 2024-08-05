@@ -3,6 +3,7 @@ package net.zuperz.neotech.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
@@ -11,6 +12,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,7 +28,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.zuperz.neotech.block.entity.custom.HardAnvilBlockEntity;
+import net.zuperz.neotech.util.ModTags;
 import org.jetbrains.annotations.Nullable;
+
+import java.awt.*;
 
 public class HardAnvilBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -53,8 +59,8 @@ public class HardAnvilBlock extends BaseEntityBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getClockWise());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getClockWise());
     }
 
     @Override
@@ -71,7 +77,8 @@ public class HardAnvilBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new HardAnvilBlockEntity(pos, state);
+        int maxItemCount = 1;
+        return new HardAnvilBlockEntity(pos, state, maxItemCount);
     }
 
     @Override
@@ -94,7 +101,31 @@ public class HardAnvilBlock extends BaseEntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos,
                                               Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        if(pLevel.getBlockEntity(pPos) instanceof HardAnvilBlockEntity pedestalBlockEntity) {
+        if (pLevel.getBlockEntity(pPos) instanceof HardAnvilBlockEntity pedestalBlockEntity) {
+            ItemStack heldItem = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+
+            // Check if the held item is a pickaxe
+            if (heldItem.is(ModTags.Items.HAMMER_ITEM)) {
+                ItemStack stackOnPedestal = pedestalBlockEntity.getItem(0);
+
+                // Example condition: Transform coal to diamond and damage the pickaxe
+                if (stackOnPedestal.getItem() == Items.COAL) {
+                    pedestalBlockEntity.setItem(0, new ItemStack(Items.DIAMOND));
+                    pLevel.playSound(pPlayer, pPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1f, 1f);
+
+                    // Apply damage to the pickaxe
+                    if (!heldItem.isEmpty()) {
+                        heldItem.setDamageValue(heldItem.getDamageValue() + 5); // Adjust damage as needed
+                        if (heldItem.getDamageValue() >= heldItem.getMaxDamage()) {
+                            pPlayer.getInventory().removeItem(heldItem); // Optionally remove the item if it's broken
+                        }
+                    }
+
+                    return ItemInteractionResult.SUCCESS;
+                }
+            }
+
+            // Handle other interactions
             if(pedestalBlockEntity.isEmpty() && !pStack.isEmpty()) {
                 pedestalBlockEntity.setItem(0, pStack);
                 pStack.shrink(1);
@@ -108,6 +139,7 @@ public class HardAnvilBlock extends BaseEntityBlock {
         }
         return ItemInteractionResult.SUCCESS;
     }
+
 
     @Override
     public MapCodec<? extends BaseEntityBlock> codec() {

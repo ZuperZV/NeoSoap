@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "neo_tech:block/hard_anvil",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "neo_tech:block/hard_anvil"
+    },
+    "facing=south": {
+      "model": "neo_tech:block/hard_anvil",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "neo_tech:block/hard_anvil",
+      "y": 270
+    }
+  }
+}
