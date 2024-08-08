@@ -1,17 +1,25 @@
 package net.zuperz.neotech;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.zuperz.neotech.block.ModBlocks;
 import net.zuperz.neotech.block.entity.ModBlockEntities;
+import net.zuperz.neotech.block.entity.custom.HardAnvilBlockEntity;
 import net.zuperz.neotech.block.entity.renderer.HardAnvilBlockEntityRenderer;
 import net.zuperz.neotech.item.custom.ModCreativeModeTabs;
 import net.zuperz.neotech.item.ModItems;
+import net.zuperz.neotech.recipe.ModRecipes;
+import net.zuperz.neotech.screen.HardAnvilMenu;
+import net.zuperz.neotech.screen.HardAnvilScreen;
+import net.zuperz.neotech.screen.ModMenuTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -26,6 +34,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+import static net.zuperz.neotech.screen.ModMenuTypes.HARD_ANVIL_MENU;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(NeoTech.MOD_ID)
@@ -43,10 +53,14 @@ public class NeoTech
         modEventBus.addListener(this::commonSetup);
 
         ModCreativeModeTabs.register(modEventBus);
-        ModBlockEntities.register(modEventBus);
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+
+        ModRecipes.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+
+        ModMenuTypes.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
@@ -85,6 +99,11 @@ public class NeoTech
         LOGGER.info("HELLO from server starting");
     }
 
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+
+    }
+
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
@@ -96,6 +115,10 @@ public class NeoTech
         @SubscribeEvent
         public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(ModBlockEntities.HARD_ANVIL_BE.get(), HardAnvilBlockEntityRenderer::new);
+        }
+
+        private void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(HARD_ANVIL_MENU.get(), HardAnvilScreen::new);
         }
     }
 }
