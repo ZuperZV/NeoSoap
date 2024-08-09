@@ -20,31 +20,25 @@ public class HardAnvilMenu extends AbstractContainerMenu {
     private final HardAnvilBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
-    private final IItemHandler itemHandler;
 
     public static final ItemStackHandler ITEM_HANDLER_CAPABILITY = null;
 
-    public HardAnvilMenu(int pContainerId, Inventory inv, IItemHandler itemHandler, FriendlyByteBuf extraData, HardAnvilBlockEntity blockEntity, IItemHandler itemHandler1) {
-        this(pContainerId, blockEntity, inv, itemHandler, (HardAnvilBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
-    }
-
-    public HardAnvilMenu(int pContainerId, HardAnvilBlockEntity blockEntity1, Inventory inv, IItemHandler itemHandler, HardAnvilBlockEntity blockEntity, ContainerData data) {
+    public HardAnvilMenu(int pContainerId, Inventory inv, HardAnvilBlockEntity blockEntity, ContainerData data) {
         super(ModMenuTypes.HARD_ANVIL_MENU.get(), pContainerId);
-        this.blockEntity = blockEntity1;
-        this.itemHandler = itemHandler;
-        checkContainerSize(inv, 3);
+        this.blockEntity = blockEntity;
         this.level = inv.player.level();
         this.data = data;
+
+        IItemHandler itemHandler = blockEntity.getItemHandler();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-            this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 11));
-            this.addSlot(new SlotItemHandler(itemHandler, 1, 26, 59));
-            this.addSlot(new SlotItemHandler(itemHandler, 2, 134, 59));
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 80, 11));
+        this.addSlot(new SlotItemHandler(itemHandler, 1, 26, 59));
+        this.addSlot(new SlotItemHandler(itemHandler, 2, 134, 59));
 
-            // Add data slots
-            addDataSlots(data);
+        addDataSlots(data);
     }
 
     public boolean isCrafting() {

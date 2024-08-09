@@ -99,11 +99,10 @@ public class HardAnvilRecipe implements Recipe<RecipeInput> {
 
 
         public static final MapCodec<HardAnvilRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                        ItemStack.CODEC.fieldOf("outputItem").forGetter(recipe -> recipe.outputStack),
-                        Codec.INT.fieldOf("outputAmount").forGetter(recipe -> recipe.outputStack.getCount()),
-                        Ingredient.CODEC.fieldOf("inputItem").forGetter(HardAnvilRecipe::getInput)
-                ).apply(instance, HardAnvilRecipe::new)
-        );
+                ItemStack.CODEC.fieldOf("outputItem").forGetter(recipe -> recipe.outputStack),
+                Codec.INT.fieldOf("outputAmount").forGetter(recipe -> recipe.outputStack.getCount()),
+                Ingredient.CODEC.fieldOf("inputItem").forGetter(HardAnvilRecipe::getInput)
+        ).apply(instance, HardAnvilRecipe::new));
 
 
         public static final StreamCodec<RegistryFriendlyByteBuf, HardAnvilRecipe> STREAM_CODEC = StreamCodec.of(HardAnvilRecipe.Serializer::toNetwork, HardAnvilRecipe.Serializer::fromNetwork);

@@ -21,6 +21,7 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<HardAnvilMenu>> HARD_ANVIL_MENU =
             registerMenuType(HardAnvilMenu, "hard_anvil_menu");
 
+
     private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }

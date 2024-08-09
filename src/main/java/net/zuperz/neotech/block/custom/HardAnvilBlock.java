@@ -4,10 +4,15 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -28,7 +33,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.extensions.IPlayerExtension;
 import net.zuperz.neotech.block.entity.ModBlockEntities;
 import net.zuperz.neotech.block.entity.custom.HardAnvilBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static net.minecraft.world.level.block.CaveVines.use;
 
 public class HardAnvilBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -42,11 +50,7 @@ public class HardAnvilBlock extends BaseEntityBlock {
                 INSIDE}), BooleanOp.ONLY_FIRST);
     }
 
-    public static final MapCodec<HardAnvilBlock> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                    BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(b -> b.properties)
-            ).apply(instance, HardAnvilBlock::new)
-    );
+    public static final MapCodec<HardAnvilBlock> CODEC = simpleCodec(HardAnvilBlock::new);
 
     private final BlockBehaviour.Properties properties;
 
@@ -104,18 +108,34 @@ public class HardAnvilBlock extends BaseEntityBlock {
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if (entity instanceof HardAnvilBlockEntity) {
-                IPlayerExtension playerExtension = (IPlayerExtension) pPlayer;
-                playerExtension.openMenu((MenuProvider) entity, buffer -> buffer.writeBlockPos(pPos));
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
+    @Override
+    public @NotNull ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+        if (pLevel.isClientSide) {
+            return ItemInteractionResult.SUCCESS;
+        } else {
+            BlockEntity blockentity = pLevel.getBlockEntity(pPos);
+            if (blockentity instanceof HardAnvilBlockEntity) {
+                pPlayer.openMenu((HardAnvilBlockEntity)blockentity);
             }
+
+            return ItemInteractionResult.CONSUME;
         }
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pLevel.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            BlockEntity blockentity = pLevel.getBlockEntity(pPos);
+            if (blockentity instanceof HardAnvilBlockEntity) {
+                pPlayer.openMenu((HardAnvilBlockEntity)blockentity);
+            }
+
+            return InteractionResult.CONSUME;
+        }
+    }
+
 
     @Nullable
     @Override

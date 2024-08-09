@@ -36,6 +36,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 import static net.zuperz.neotech.screen.ModMenuTypes.HARD_ANVIL_MENU;
+import static org.apache.commons.compress.archivers.zip.ExtraFieldUtils.register;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(NeoTech.MOD_ID)
@@ -99,11 +100,6 @@ public class NeoTech
         LOGGER.info("HELLO from server starting");
     }
 
-    @SubscribeEvent
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-
-    }
-
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
@@ -117,8 +113,9 @@ public class NeoTech
             event.registerBlockEntityRenderer(ModBlockEntities.HARD_ANVIL_BE.get(), HardAnvilBlockEntityRenderer::new);
         }
 
-        private void registerScreens(RegisterMenuScreensEvent event) {
-            event.register(HARD_ANVIL_MENU.get(), HardAnvilScreen::new);
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.HARD_ANVIL_MENU.get(), HardAnvilScreen::new);
         }
     }
 }
